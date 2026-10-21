@@ -30,7 +30,9 @@ services:
         value: /opt/render/project/src/backend/data/appointments.db
 
     # Build the React app first, then install API dependencies.
-    buildCommand: cd frontend && npm install && npm run build && cd ../backend && npm install
+    # --include=dev is essential: Render runs with NODE_ENV=production, which would
+    # otherwise skip devDependencies and leave `vite` uninstalled ("vite: not found").
+    buildCommand: cd frontend && npm install --include=dev && npm run build && cd ../backend && npm install
     startCommand: cd backend && npm start
 
     healthCheckPath: /api/v1/health
